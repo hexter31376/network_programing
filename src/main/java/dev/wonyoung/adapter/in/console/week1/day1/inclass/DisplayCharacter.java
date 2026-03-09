@@ -5,7 +5,7 @@ import dev.wonyoung.infrastructure.container.di.Component;
 import java.io.IOException;
 
 @Component
-public class DisplayCharactor {
+public class DisplayCharacter {
 
     /**
      * 32 ~ 126까지의 아스키코드를 출력하는 메서드입니다.

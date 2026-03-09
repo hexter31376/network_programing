@@ -1,9 +1,5 @@
 package dev.wonyoung;
 
-import dev.wonyoung.adapter.in.console.week1.day1.inclass.DisplayCharactor;
-import dev.wonyoung.adapter.in.console.week1.day1.inclass.ReadCharactersIncr;
-import dev.wonyoung.adapter.in.console.week1.day1.inclass.StreamCopier;
-import dev.wonyoung.adapter.in.console.week1.day1.inclass.WriteToFile;
 import dev.wonyoung.infrastructure.container.Container;
 
 public class Application {
@@ -11,8 +7,8 @@ public class Application {
         Container container = new Container();
         container.scan("dev.wonyoung");
 
-        // DisplayCharactor displayCharactor = container.get(DisplayCharactor.class);
-        // displayCharactor.start();
+        // DisplayCharacter displayCharacter = container.get(DisplayCharactor.class);
+        // displayCharacter.start();
 
         // ReadCharactersIncr readCharactersIncr = container.get(ReadCharactersIncr.class);
         // readCharactersIncr.start();
