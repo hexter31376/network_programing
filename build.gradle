@@ -1,5 +1,16 @@
 plugins {
     id 'java'
+    id 'application'
+}
+
+application {
+    mainClass.set('dev.wonyoung.Application')
+}
+
+run {
+    standardInput = System.in
+    standardOutput = System.out
+    errorOutput = System.err
 }
 
 group = 'dev.wonyoung'
