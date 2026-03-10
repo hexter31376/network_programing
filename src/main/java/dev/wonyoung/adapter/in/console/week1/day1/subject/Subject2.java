@@ -15,7 +15,7 @@ public class Subject2 {
     public static final int KILOBYTE_1 = 1024;
     public static final int KILOBYTE_8 = 8192;
     public static final int KILOBYTE_64 = 65536;
-    public static final int FIVE_SECOND = 5000;
+    public static final long FIVE_SECOND = 5000L;
 
     public static final String FILESET_INPUT_TXT = "fileset/input.txt";
     public static final String FILESET_OUTPUT_TXT = "fileset/output.txt";
@@ -33,13 +33,17 @@ public class Subject2 {
     }
 
     private void timeCopyingFile(String name, Runnable task) {
-        long startTime = System.currentTimeMillis();
-        task.run();
-        long endTime = System.currentTimeMillis();
-        System.out.println("[" + name + "] 파일 복사에 걸린 시간: " + (endTime - startTime) + " ms");
+        long startTime = System.nanoTime();
+        try {
+            task.run();
+        } catch (Exception e) {
+            throw new RuntimeException("[" + name + "] 복사 중 오류 발생", e);
+        }
+        long endTime = System.nanoTime();
+        System.out.println("[" + name + "] 파일 복사에 걸린 시간: " + (endTime - startTime) + " ns");
     }
 
-    private void copyFile (int bufferSize) {
+    private void copyFile(int bufferSize) {
         try (
                 FileInputStream fis = new FileInputStream(FILESET_INPUT_TXT);
                 FileOutputStream fos = new FileOutputStream(FILESET_OUTPUT_TXT)
@@ -65,7 +69,7 @@ public class Subject2 {
 
     private void fileDelete() {
         try {
-            Files.deleteIfExists(Paths.get("fileset/output.txt"));
+            Files.deleteIfExists(Paths.get(FILESET_OUTPUT_TXT));
         } catch (IOException e) {
             System.out.println("파일 삭제에 실패하였습니다 : " + e.getMessage());
         }

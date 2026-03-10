@@ -12,7 +12,7 @@ import java.nio.file.StandardCopyOption;
 @Component
 public class Subject3 {
 
-    public static final int FIVE_SECOND = 5000;
+    public static final long FIVE_SECOND = 5000L;
 
     public static final String FILESET_INPUT_TXT = "fileset/input.txt";
     public static final String FILESET_OUTPUT_TXT = "fileset/output.txt";
@@ -33,10 +33,14 @@ public class Subject3 {
     }
 
     private void timeCopyingFile(String name, Runnable task) {
-        long start = System.currentTimeMillis();
-        task.run();
-        long end = System.currentTimeMillis();
-        System.out.println("[" + name + "] 복사에 걸린 시간: " + (end - start) + " ms");
+        long start = System.nanoTime();
+        try {
+            task.run();
+        } catch (Exception e) {
+            throw new RuntimeException("[" + name + "] 복사 중 오류 발생", e);
+        }
+        long end = System.nanoTime();
+        System.out.println("[" + name + "] 복사에 걸린 시간: " + (end - start) + " ns");
     }
 
     private void copyFileByByte() {
