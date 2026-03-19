@@ -10,6 +10,7 @@ import java.io.OutputStream;
 public class FileAndConsoleOutputStream extends OutputStream {
 
     public static final String FILESET_OUTPUT_TXT = "fileset/output.txt";
+
     private final OutputStream fileOutputStream;
     private final OutputStream consoleOutputStream;
 
