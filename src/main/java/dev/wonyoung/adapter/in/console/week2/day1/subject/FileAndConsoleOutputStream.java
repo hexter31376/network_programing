@@ -9,11 +9,12 @@ import java.io.OutputStream;
 @Component
 public class FileAndConsoleOutputStream extends OutputStream {
 
+    public static final String FILESET_OUTPUT_TXT = "fileset/output.txt";
     private final OutputStream fileOutputStream;
     private final OutputStream consoleOutputStream;
 
     public FileAndConsoleOutputStream() throws IOException {
-        this.fileOutputStream = new FileOutputStream("fileset/output.txt", true);
+        this.fileOutputStream = new FileOutputStream(FILESET_OUTPUT_TXT, true);
         this.consoleOutputStream = System.out;
     }
 
