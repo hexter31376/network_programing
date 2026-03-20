@@ -20,9 +20,9 @@ public class DataFileAccountRepository implements AccountRepository {
     public void save(Account account) {
         try (DataOutputStream dos = new DataOutputStream(
                 new FileOutputStream(FILE_PATH.toFile(), true))) {
-            dos.writeUTF(account.getAccountNumber());
-            dos.writeUTF(account.getName());
-            dos.writeLong(account.getBalance());
+            dos.writeUTF(account.accountNumber());
+            dos.writeUTF(account.name());
+            dos.writeLong(account.balance());
         } catch (IOException e) {
             throw new RuntimeException("계좌 저장 실패", e);
         }
@@ -31,7 +31,7 @@ public class DataFileAccountRepository implements AccountRepository {
     @Override
     public Optional<Account> findByAccountNumber(String accountNumber) {
         return readAll().stream()
-                .filter(a -> a.getAccountNumber().equals(accountNumber))
+                .filter(a -> a.accountNumber().equals(accountNumber))
                 .findFirst();
     }
 
@@ -48,7 +48,7 @@ public class DataFileAccountRepository implements AccountRepository {
     @Override
     public void update(Account account) {
         List<Account> updated = readAll().stream()
-                .map(a -> a.getAccountNumber().equals(account.getAccountNumber()) ? account : a)
+                .map(a -> a.accountNumber().equals(account.accountNumber()) ? account : a)
                 .toList();
         writeAll(updated);
     }
@@ -56,7 +56,7 @@ public class DataFileAccountRepository implements AccountRepository {
     @Override
     public void deleteByAccountNumber(String accountNumber) {
         List<Account> remaining = readAll().stream()
-                .filter(a -> !a.getAccountNumber().equals(accountNumber))
+                .filter(a -> !a.accountNumber().equals(accountNumber))
                 .toList();
         writeAll(remaining);
     }
@@ -65,9 +65,9 @@ public class DataFileAccountRepository implements AccountRepository {
         try (DataOutputStream dos = new DataOutputStream(
                 new FileOutputStream(FILE_PATH.toFile(), false))) {
             for (Account a : accounts) {
-                dos.writeUTF(a.getAccountNumber());
-                dos.writeUTF(a.getName());
-                dos.writeLong(a.getBalance());
+                dos.writeUTF(a.accountNumber());
+                dos.writeUTF(a.name());
+                dos.writeLong(a.balance());
             }
         } catch (IOException e) {
             throw new RuntimeException("계좌 저장 실패", e);

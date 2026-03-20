@@ -17,7 +17,7 @@ public class TextFileAccountRepository implements AccountRepository {
 
     @Override
     public void save(Account account) {
-        String line = account.getAccountNumber() + "," + account.getName() + "," + account.getBalance() + System.lineSeparator();
+        String line = account.accountNumber() + "," + account.name() + "," + account.balance() + System.lineSeparator();
         try {
             Files.writeString(FILE_PATH, line, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (IOException e) {
@@ -28,7 +28,7 @@ public class TextFileAccountRepository implements AccountRepository {
     @Override
     public Optional<Account> findByAccountNumber(String accountNumber) {
         return readAll().stream()
-                .filter(a -> a.getAccountNumber().equals(accountNumber))
+                .filter(a -> a.accountNumber().equals(accountNumber))
                 .findFirst();
     }
 
@@ -45,7 +45,7 @@ public class TextFileAccountRepository implements AccountRepository {
     @Override
     public void update(Account account) {
         List<Account> updated = readAll().stream()
-                .map(a -> a.getAccountNumber().equals(account.getAccountNumber()) ? account : a)
+                .map(a -> a.accountNumber().equals(account.accountNumber()) ? account : a)
                 .toList();
         writeAll(updated);
     }
@@ -53,7 +53,7 @@ public class TextFileAccountRepository implements AccountRepository {
     @Override
     public void deleteByAccountNumber(String accountNumber) {
         List<Account> remaining = readAll().stream()
-                .filter(a -> !a.getAccountNumber().equals(accountNumber))
+                .filter(a -> !a.accountNumber().equals(accountNumber))
                 .toList();
         writeAll(remaining);
     }
@@ -61,7 +61,7 @@ public class TextFileAccountRepository implements AccountRepository {
     private void writeAll(List<Account> accounts) {
         try {
             String content = accounts.stream()
-                    .map(a -> a.getAccountNumber() + "," + a.getName() + "," + a.getBalance())
+                    .map(a -> a.accountNumber() + "," + a.name() + "," + a.balance())
                     .collect(Collectors.joining(System.lineSeparator()));
             Files.writeString(FILE_PATH,
                     content.isEmpty() ? "" : content + System.lineSeparator(),

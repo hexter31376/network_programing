@@ -13,7 +13,7 @@ public class InMemoryAccountRepository implements AccountRepository {
 
     @Override
     public void save(Account account) {
-        store.put(account.getAccountNumber(), account);
+        store.put(account.accountNumber(), account);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class InMemoryAccountRepository implements AccountRepository {
 
     @Override
     public void update(Account account) {
-        store.put(account.getAccountNumber(), account);
+        store.put(account.accountNumber(), account);
     }
 
     @Override
