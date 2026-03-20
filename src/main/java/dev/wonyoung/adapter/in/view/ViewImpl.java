@@ -23,7 +23,6 @@ public class ViewImpl extends JFrame implements AccountView {
     private JTextField resultBalanceField;
 
     public ViewImpl() {
-        initUI();
     }
 
     private void initUI() {
@@ -176,6 +175,7 @@ public class ViewImpl extends JFrame implements AccountView {
 
     @Override
     public void display() {
+        initUI();
         setVisible(true);
     }
 }
