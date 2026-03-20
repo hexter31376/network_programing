@@ -5,6 +5,7 @@ import dev.wonyoung.infrastructure.container.di.Component;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.im.InputContext;
 
 @Component
 public class AccountViewImpl extends JFrame implements AccountView {
@@ -33,7 +34,6 @@ public class AccountViewImpl extends JFrame implements AccountView {
     private JButton deleteButton;
 
     public AccountViewImpl() {
-        initUI();
     }
 
     private void initUI() {
@@ -255,12 +255,22 @@ public class AccountViewImpl extends JFrame implements AccountView {
 
     @Override
     public void showError(String message) {
+        endImeComposition();
         JOptionPane.showMessageDialog(this, message, "입력 오류", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override
-    public void showEmptyAccount() {
-        JOptionPane.showMessageDialog(this, "빈 계좌", "조회 결과", JOptionPane.WARNING_MESSAGE);
+    public void showEmptyAccount(String reason) {
+        endImeComposition();
+        JOptionPane.showMessageDialog(this, "빈 계좌 : " + reason, "조회 결과", JOptionPane.WARNING_MESSAGE);
+    }
+
+    private void endImeComposition() {
+        java.awt.Component focused = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+        if (focused != null) {
+            InputContext ic = focused.getInputContext();
+            if (ic != null) ic.endComposition();
+        }
     }
 
     @Override
@@ -310,6 +320,7 @@ public class AccountViewImpl extends JFrame implements AccountView {
 
     @Override
     public void display() {
+        initUI();
         setVisible(true);
     }
 }

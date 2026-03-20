@@ -19,6 +19,12 @@ public class FileInspectService implements FileInspectUseCase {
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
                     .withZone(ZoneId.systemDefault());
 
+    private static final String NO_PARENT        = "(없음)";
+    private static final String DIR_PREFIX        = "[DIR] ";
+    private static final String FILE_PREFIX       = "[FILE]";
+    private static final String CHILDREN_INDENT   = "  ";
+    private static final String CANONICAL_FAIL_PREFIX = "(읽기 실패: ";
+
     @Override
     public FileInfo inspect(String pathStr) {
         Path path = Path.of(pathStr);
@@ -33,12 +39,13 @@ public class FileInspectService implements FileInspectUseCase {
             String name = path.getFileName().toString();
             String absolutePath = path.toAbsolutePath().toString();
             String canonicalPath = canonicalOf(path);
-            String parent = String.valueOf(path.getParent());
+            Path parentPath = path.getParent();
+            String parent = (parentPath != null) ? parentPath.toString() : NO_PARENT;
             boolean isAbsolute = path.isAbsolute();
             boolean isHidden = isHiddenSafe(path);
             boolean isRegular = attrs.isRegularFile();
             boolean isDirectory = attrs.isDirectory();
-            boolean isSymLink = attrs.isSymbolicLink();
+            boolean isSymLink = Files.isSymbolicLink(path);
             boolean canRead = path.toFile().canRead();
             boolean canWrite = path.toFile().canWrite();
             boolean canExecute = path.toFile().canExecute();
@@ -48,13 +55,13 @@ public class FileInspectService implements FileInspectUseCase {
 
             if (isRegular) {
                 return new FileInfo(name, absolutePath, canonicalPath, parent,
-                        isAbsolute, isHidden, true, false, isSymLink,
+                        isAbsolute, isHidden, isRegular, isDirectory, isSymLink,
                         canRead, canWrite, canExecute,
                         createdAt, modifiedAt, accessAt,
                         attrs.size(), null, null, null, null);
             }
 
-            if (isDirectory) {
+            if (isDirectory) { // isRegular 블록을 통과했으므로 isRegular=false, isDirectory=true
                 int[] fileCount = {0};
                 int[] dirCount  = {0};
                 long[] total    = {0L};
@@ -82,21 +89,21 @@ public class FileInspectService implements FileInspectUseCase {
                 List<String> children = new ArrayList<>();
                 try (var stream = Files.list(path)) {
                     stream.sorted().forEach(p -> {
-                        String type = Files.isDirectory(p) ? "[DIR] " : "[FILE]";
-                        children.add(type + "  " + p.getFileName());
+                        String type = Files.isDirectory(p) ? DIR_PREFIX : FILE_PREFIX;
+                        children.add(type + CHILDREN_INDENT + p.getFileName());
                     });
                 }
 
                 return new FileInfo(name, absolutePath, canonicalPath, parent,
-                        isAbsolute, isHidden, false, true, isSymLink,
+                        isAbsolute, isHidden, isRegular, isDirectory, isSymLink,
                         canRead, canWrite, canExecute,
                         createdAt, modifiedAt, accessAt,
                         null, fileCount[0], dirCount[0], total[0], children);
             }
 
-            // 기타 (소켓, 디바이스 등)
+            // 기타 (소켓, 디바이스 등) — isRegular=false, isDirectory=false
             return new FileInfo(name, absolutePath, canonicalPath, parent,
-                    isAbsolute, isHidden, false, false, isSymLink,
+                    isAbsolute, isHidden, isRegular, isDirectory, isSymLink,
                     canRead, canWrite, canExecute,
                     createdAt, modifiedAt, accessAt,
                     null, null, null, null, null);
@@ -110,7 +117,7 @@ public class FileInspectService implements FileInspectUseCase {
         try {
             return path.toRealPath().toString();
         } catch (IOException e) {
-            return "(읽기 실패: " + e.getMessage() + ")";
+            return CANONICAL_FAIL_PREFIX + e.getMessage() + ")";
         }
     }
 

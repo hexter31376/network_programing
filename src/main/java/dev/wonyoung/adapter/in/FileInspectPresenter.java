@@ -16,12 +16,12 @@ public class FileInspectPresenter {
     public FileInspectPresenter(FileInspectView view, FileInspectUseCase fileInspectUseCase) {
         this.view = view;
         this.fileInspectUseCase = fileInspectUseCase;
-        view.bindChooseListener(e -> handleChoose());
-        view.bindInspectListener(e -> handleInspect());
     }
 
     public void start() {
         view.display();
+        view.bindChooseListener(e -> handleChoose());
+        view.bindInspectListener(e -> handleInspect());
     }
 
     private void handleChoose() {
