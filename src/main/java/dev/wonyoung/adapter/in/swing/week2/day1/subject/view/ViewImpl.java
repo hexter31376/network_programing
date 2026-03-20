@@ -113,10 +113,26 @@ public class ViewImpl extends JFrame implements AccountView {
 
     // ── AccountView 구현 ─────────────────────────────────────
 
-    @Override public String getRegName()            { return regNameField.getText().trim(); }
-    @Override public String getRegAccountNumber()   { return regAccountField.getText().trim(); }
-    @Override public String getRegBalance()         { return regBalanceField.getText().trim(); }
-    @Override public String getSearchAccountNumber(){ return searchAccountField.getText().trim(); }
+    @Override
+    public String getRegName() {
+        return regNameField.getText().trim();
+    }
+
+    @Override public String getRegAccountNumber() {
+        return regAccountField
+                .getText()
+                .trim();
+    }
+    @Override public String getRegBalance() {
+        return regBalanceField
+                .getText()
+                .trim();
+    }
+    @Override public String getSearchAccountNumber() {
+        return searchAccountField
+                .getText()
+                .trim();
+    }
 
     @Override
     public void setCount(int count) {
