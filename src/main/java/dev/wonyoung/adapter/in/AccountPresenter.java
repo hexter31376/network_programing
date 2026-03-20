@@ -65,7 +65,7 @@ public class AccountPresenter {
 
         try {
             Account account = accountUseCase.findByAccountNumber(accountNumber);
-            view.showAccountResult(account.getName(), account.getBalance());
+            view.showAccountResult(account.name(), account.balance());
         } catch (IllegalArgumentException ex) {
             view.showError(ex.getMessage());
             view.clearSearchResult();

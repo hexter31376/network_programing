@@ -16,7 +16,7 @@ public class TextFileAccountRepository implements AccountRepository {
 
     @Override
     public void save(Account account) {
-        String line = account.getAccountNumber() + "," + account.getName() + "," + account.getBalance() + System.lineSeparator();
+        String line = account.accountNumber() + "," + account.name() + "," + account.balance() + System.lineSeparator();
         try {
             Files.writeString(FILE_PATH, line, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (IOException e) {
@@ -27,7 +27,7 @@ public class TextFileAccountRepository implements AccountRepository {
     @Override
     public Optional<Account> findByAccountNumber(String accountNumber) {
         return readAll().stream()
-                .filter(a -> a.getAccountNumber().equals(accountNumber))
+                .filter(a -> a.accountNumber().equals(accountNumber))
                 .findFirst();
     }
 
