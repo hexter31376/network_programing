@@ -1,5 +1,6 @@
-package dev.wonyoung.adapter.in.swing.week2.day1.subject;
+package dev.wonyoung.adapter.in.console.week2.day1.subject;
 
+import dev.wonyoung.adapter.in.swing.week2.day1.subject.AccountPresenter;
 import dev.wonyoung.infrastructure.container.di.Component;
 import dev.wonyoung.infrastructure.container.di.Inject;
 
