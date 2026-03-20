@@ -21,7 +21,7 @@ public class Subject1 {
             writer.write(input);
             writer.newLine();
         } catch (IOException e) {
-            System.err.println("입출력 오류 발생");
+            System.err.println("[Subject1] 입출력 오류 발생");
         }
     }
 }
