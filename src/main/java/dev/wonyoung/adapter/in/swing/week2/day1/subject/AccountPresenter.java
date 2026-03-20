@@ -9,6 +9,11 @@ import dev.wonyoung.infrastructure.container.di.Inject;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * AccountPresenter는 AccountView와 AccountUseCase를 연결하는 역할을 합니다.
+ * 사용자의 입력을 받아 AccountUseCase에 전달하고, 결과를 다시 AccountView에 보여줍니다.
+ * 이 클래스는 ActionListener를 구현하여 버튼 클릭 이벤트를 처리합니다.
+ */
 @Component
 public class AccountPresenter implements ActionListener {
 
