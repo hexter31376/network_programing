@@ -9,8 +9,6 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -25,21 +23,11 @@ public class FileInspectService implements FileInspectUseCase {
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
                     .withZone(ZoneId.systemDefault());
 
-    private static final String NO_PARENT        = "(없음)";
-    private static final String DIR_PREFIX        = "[DIR] ";
-    private static final String FILE_PREFIX       = "[FILE]";
-    private static final String CHILDREN_INDENT   = "  ";
+    private static final String NO_PARENT            = "(없음)";
     private static final String CANONICAL_FAIL_PREFIX = "(읽기 실패: ";
 
     /**
      * 주어진 경로를 분석하여 파일 정보를 반환한다.
-     * <p>
-     * 경로 유형에 따라 다음과 같이 동작한다:
-     * <ul>
-     *   <li>일반 파일: 크기, 권한, 시간 정보를 포함한 {@link FileInfo} 반환</li>
-     *   <li>디렉토리: 하위 파일/디렉토리 수, 총 용량, 직접 자식 목록을 포함한 {@link FileInfo} 반환</li>
-     *   <li>기타(소켓, 디바이스 등): 기본 정보만 포함한 {@link FileInfo} 반환</li>
-     * </ul>
      *
      * @param pathStr 분석할 파일 또는 디렉토리의 경로 문자열
      * @return 분석된 파일 정보
@@ -57,46 +45,36 @@ public class FileInspectService implements FileInspectUseCase {
         try {
             BasicFileAttributes attrs = Files.readAttributes(path, BasicFileAttributes.class);
 
-            String name = path.getFileName().toString();
-            String absolutePath = path.toAbsolutePath().toString();
+            String name          = path.getFileName().toString();
+            String originalPath  = pathStr;
+            String absolutePath  = path.toAbsolutePath().toString();
             String canonicalPath = canonicalOf(path);
-            Path parentPath = path.getParent();
-            String parent = (parentPath != null) ? parentPath.toString() : NO_PARENT;
-            boolean isAbsolute = path.isAbsolute();
-            boolean isHidden = isHiddenSafe(path);
-            boolean isRegular = attrs.isRegularFile();
-            boolean isDirectory = attrs.isDirectory();
-            boolean isSymLink = Files.isSymbolicLink(path);
-            boolean canRead = path.toFile().canRead();
-            boolean canWrite = path.toFile().canWrite();
-            boolean canExecute = path.toFile().canExecute();
-            String createdAt = DT_FMT.format(attrs.creationTime().toInstant());
-            String modifiedAt = DT_FMT.format(attrs.lastModifiedTime().toInstant());
-            String accessAt = DT_FMT.format(attrs.lastAccessTime().toInstant());
+            Path parentPath      = path.getParent();
+            String parent        = (parentPath != null) ? parentPath.toString() : NO_PARENT;
+            boolean isAbsolute   = path.isAbsolute();
+            boolean isHidden     = isHiddenSafe(path);
+            boolean isRegular    = attrs.isRegularFile();
+            boolean isDirectory  = attrs.isDirectory();
+            boolean canRead      = path.toFile().canRead();
+            boolean canWrite     = path.toFile().canWrite();
+            boolean canExecute   = path.toFile().canExecute();
+            String modifiedAt    = DT_FMT.format(attrs.lastModifiedTime().toInstant());
 
             if (isRegular) {
-                return new FileInfo(name, absolutePath, canonicalPath, parent,
-                        isAbsolute, isHidden, isRegular, isDirectory, isSymLink,
+                Long wordCount = isTxtFile(name) ? countWords(path) : null;
+                return new FileInfo(name, originalPath, absolutePath, canonicalPath, parent,
+                        isAbsolute, isHidden, isRegular, isDirectory,
                         canRead, canWrite, canExecute,
-                        createdAt, modifiedAt, accessAt,
-                        attrs.size(), null, null, null, null);
+                        modifiedAt, attrs.size(), wordCount,
+                        null, null, null);
             }
 
-            if (isDirectory) { // isRegular 블록을 통과했으므로 isRegular=false, isDirectory=true
-
-                // 람다식 내에서 effectively final이 필요한데, 파일과 디렉토리 개수는 변경되어야 하므로 AtomicInteger 사용
+            if (isDirectory) {
                 AtomicInteger fileCount = new AtomicInteger();
                 AtomicInteger dirCount  = new AtomicInteger();
                 AtomicLong    total     = new AtomicLong();
 
                 Files.walkFileTree(path, new SimpleFileVisitor<>() {
-                    /**
-                     * 파일 방문 시 호출된다. 파일 수와 총 용량을 누적한다.
-                     *
-                     * @param file 방문한 파일 경로
-                     * @param a    파일의 기본 속성
-                     * @return 탐색을 계속하도록 {@link FileVisitResult#CONTINUE} 반환
-                     */
                     @Override
                     public FileVisitResult visitFile(Path file, BasicFileAttributes a) {
                         fileCount.incrementAndGet();
@@ -104,66 +82,51 @@ public class FileInspectService implements FileInspectUseCase {
                         return FileVisitResult.CONTINUE;
                     }
 
-                    /**
-                     * 디렉토리 진입 전 호출된다. 루트 디렉토리를 제외한 하위 디렉토리 수를 누적한다.
-                     *
-                     * @param d 진입할 디렉토리 경로
-                     * @param a 디렉토리의 기본 속성
-                     * @return 탐색을 계속하도록 {@link FileVisitResult#CONTINUE} 반환
-                     */
                     @Override
                     public FileVisitResult preVisitDirectory(Path d, BasicFileAttributes a) {
                         if (!d.equals(path)) dirCount.incrementAndGet();
                         return FileVisitResult.CONTINUE;
                     }
 
-                    /**
-                     * 파일 방문 실패 시 호출된다. 권한 오류 등으로 접근 불가한 파일은 무시하고 탐색을 계속한다.
-                     *
-                     * @param file 방문에 실패한 파일 경로
-                     * @param ex   발생한 예외
-                     * @return 탐색을 계속하도록 {@link FileVisitResult#CONTINUE} 반환
-                     */
                     @Override
                     public FileVisitResult visitFileFailed(Path file, IOException ex) {
                         return FileVisitResult.CONTINUE;
                     }
                 });
 
-                List<String> children = new ArrayList<>();
-                try (var stream = Files.list(path)) {
-                    stream.sorted().forEach(p -> {
-                        String type = Files.isDirectory(p) ? DIR_PREFIX : FILE_PREFIX;
-                        children.add(type + CHILDREN_INDENT + p.getFileName());
-                    });
-                }
-
-                return new FileInfo(name, absolutePath, canonicalPath, parent,
-                        isAbsolute, isHidden, isRegular, isDirectory, isSymLink,
+                return new FileInfo(name, originalPath, absolutePath, canonicalPath, parent,
+                        isAbsolute, isHidden, isRegular, isDirectory,
                         canRead, canWrite, canExecute,
-                        createdAt, modifiedAt, accessAt,
-                        null, fileCount.get(), dirCount.get(), total.get(), children);
+                        modifiedAt, null, null,
+                        fileCount.get(), dirCount.get(), total.get());
             }
 
-            // 기타 (소켓, 디바이스 등) — isRegular=false, isDirectory=false
-            return new FileInfo(name, absolutePath, canonicalPath, parent,
-                    isAbsolute, isHidden, isRegular, isDirectory, isSymLink,
+            // 기타 (소켓, 디바이스 등)
+            return new FileInfo(name, originalPath, absolutePath, canonicalPath, parent,
+                    isAbsolute, isHidden, isRegular, isDirectory,
                     canRead, canWrite, canExecute,
-                    createdAt, modifiedAt, accessAt,
-                    null, null, null, null, null);
+                    modifiedAt, null, null,
+                    null, null, null);
 
         } catch (IOException e) {
             throw new RuntimeException("파일 정보 읽기 실패: " + e.getMessage(), e);
         }
     }
 
-    /**
-     * 주어진 경로의 정규 경로(canonical path)를 반환한다.
-     * 심볼릭 링크가 있을 경우 실제 경로로 변환한다.
-     *
-     * @param path 정규 경로를 구할 경로
-     * @return 정규 경로 문자열. 읽기 실패 시 오류 메시지 문자열 반환
-     */
+    private static boolean isTxtFile(String name) {
+        return name.toLowerCase().endsWith(".txt");
+    }
+
+    private static Long countWords(Path path) {
+        try {
+            String content = Files.readString(path);
+            String[] tokens = content.trim().split("\\s+");
+            return (tokens.length == 1 && tokens[0].isEmpty()) ? 0L : tokens.length;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
     private static String canonicalOf(Path path) {
         try {
             return path.toRealPath().toString();
@@ -172,13 +135,6 @@ public class FileInspectService implements FileInspectUseCase {
         }
     }
 
-    /**
-     * 주어진 경로가 숨김 파일인지 안전하게 확인한다.
-     * {@link IOException} 발생 시 숨김 파일이 아닌 것으로 간주한다.
-     *
-     * @param path 확인할 경로
-     * @return 숨김 파일이면 {@code true}, 아니면 {@code false}
-     */
     private static boolean isHiddenSafe(Path path) {
         try {
             return Files.isHidden(path);

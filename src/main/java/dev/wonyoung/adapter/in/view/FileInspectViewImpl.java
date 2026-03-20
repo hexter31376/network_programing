@@ -118,38 +118,35 @@ public class FileInspectViewImpl extends JFrame implements FileInspectView {
         sb.append("----------------------------------------------------\n");
         sb.append("  기본 정보\n");
         sb.append("----------------------------------------------------\n");
-        sb.append(row("이름", info.name()));
-        sb.append(row("경로 (Path)", info.absolutePath()));
-        sb.append(row("정규 경로 (Canonical)", info.canonicalPath()));
+        sb.append(row("이름", info.name() + " (존재함)"));
+        sb.append(row("경로 (Path)", info.path()));
+        sb.append(row("절대 경로 (AbsolutePath)", info.absolutePath()));
+        sb.append(row("정규 경로 (CanonicalPath)", info.canonicalPath()));
         sb.append(row("부모 디렉토리", info.parent()));
-        sb.append(row("절대경로 여부", yesNo(info.absolute())));
+        sb.append(row("절대경로 여부", info.absolute() ? "절대 경로" : "상대 경로"));
         sb.append(row("숨김 파일 여부", yesNo(info.hidden())));
 
         sb.append("\n");
         sb.append("----------------------------------------------------\n");
         sb.append("  유형\n");
         sb.append("----------------------------------------------------\n");
-        sb.append(row("일반 파일", yesNo(info.regularFile())));
-        sb.append(row("디렉토리", yesNo(info.directory())));
-        sb.append(row("심볼릭 링크", yesNo(info.symbolicLink())));
+        sb.append(row("종류", kindOf(info)));
 
         sb.append("\n");
         sb.append("----------------------------------------------------\n");
-        sb.append("  권한\n");
+        sb.append("  권한 (rwx)\n");
         sb.append("----------------------------------------------------\n");
-        sb.append(row("읽기 (canRead)", yesNo(info.canRead())));
-        sb.append(row("쓰기 (canWrite)", yesNo(info.canWrite())));
-        sb.append(row("실행 (canExecute)", yesNo(info.canExecute())));
+        sb.append(row("읽기 (r)", yesNo(info.canRead())));
+        sb.append(row("쓰기 (w)", yesNo(info.canWrite())));
+        sb.append(row("실행 (x)", yesNo(info.canExecute())));
 
         sb.append("\n");
         sb.append("----------------------------------------------------\n");
         sb.append("  시간\n");
         sb.append("----------------------------------------------------\n");
-        sb.append(row("생성일", info.createdAt()));
         sb.append(row("마지막 수정", info.lastModifiedAt()));
-        sb.append(row("마지막 접근", info.lastAccessAt()));
 
-        if (info.regularFile()) {
+        if (info.regularFile() && !info.canExecute()) {
             long size = info.size();
             sb.append("\n");
             sb.append("----------------------------------------------------\n");
@@ -158,6 +155,14 @@ public class FileInspectViewImpl extends JFrame implements FileInspectView {
             sb.append(row("크기 (Bytes)", size + " bytes"));
             sb.append(row("크기 (KB)", String.format("%.2f KB", (double) size / KB)));
             sb.append(row("크기 (MB)", String.format("%.4f MB", (double) size / MB)));
+
+            if (info.wordCount() != null) {
+                sb.append("\n");
+                sb.append("----------------------------------------------------\n");
+                sb.append("  파일 길이\n");
+                sb.append("----------------------------------------------------\n");
+                sb.append(row("워드 수", info.wordCount() + " 단어"));
+            }
         }
 
         if (info.directory()) {
@@ -167,23 +172,19 @@ public class FileInspectViewImpl extends JFrame implements FileInspectView {
             sb.append("  디렉토리 분석\n");
             sb.append("----------------------------------------------------\n");
             sb.append(row("파일 개수", info.fileCount() + " 개"));
-            sb.append(row("디렉토리 개수", info.dirCount()  + " 개"));
+            sb.append(row("디렉토리 개수", info.dirCount() + " 개"));
             sb.append(row("총 용량 (Bytes)", total + " bytes"));
-            sb.append(row("총 용량 (KB)", String.format("%.2f KB",  (double) total / KB)));
-            sb.append(row("총 용량 (MB)", String.format("%.4f MB",  (double) total / MB)));
-
-            sb.append("\n");
-            sb.append("----------------------------------------------------\n");
-            sb.append("  하위 항목 목록 (직접 자식)\n");
-            sb.append("----------------------------------------------------\n");
-            if (info.children().isEmpty()) {
-                sb.append("  (비어 있는 디렉토리)\n");
-            } else {
-                info.children().forEach(c -> sb.append("  ").append(c).append("\n"));
-            }
+            sb.append(row("총 용량 (KB)", String.format("%.2f KB", (double) total / KB)));
+            sb.append(row("총 용량 (MB)", String.format("%.4f MB", (double) total / MB)));
         }
 
         return sb.toString();
+    }
+
+    private static String kindOf(FileInfo info) {
+        if (info.directory()) return "디렉토리";
+        if (info.canExecute()) return "실행 파일";
+        return "파일";
     }
 
     private static String row(String label, String value) {
