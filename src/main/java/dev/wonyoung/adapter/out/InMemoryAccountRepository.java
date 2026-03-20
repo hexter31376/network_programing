@@ -2,13 +2,11 @@ package dev.wonyoung.adapter.out;
 
 import dev.wonyoung.application.port.out.AccountRepository;
 import dev.wonyoung.domain.Account;
-import dev.wonyoung.infrastructure.container.di.Component;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@Component
 public class InMemoryAccountRepository implements AccountRepository {
 
     private final Map<String, Account> store = new LinkedHashMap<>();
