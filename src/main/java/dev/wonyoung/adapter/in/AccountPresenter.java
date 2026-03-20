@@ -1,6 +1,6 @@
-package dev.wonyoung.adapter.in.swing.week2.day1.subject;
+package dev.wonyoung.adapter.in;
 
-import dev.wonyoung.adapter.in.swing.week2.day1.subject.view.AccountView;
+import dev.wonyoung.adapter.in.view.AccountView;
 import dev.wonyoung.application.port.in.AccountUseCase;
 import dev.wonyoung.domain.Account;
 import dev.wonyoung.infrastructure.container.di.Component;

@@ -1,7 +1,7 @@
 package dev.wonyoung;
 
 import dev.wonyoung.adapter.in.console.week2.day1.subject.Subject1;
-import dev.wonyoung.adapter.in.swing.week2.day1.subject.Subject2;
+import dev.wonyoung.adapter.in.console.week2.day1.subject.Subject2;
 import dev.wonyoung.infrastructure.container.Container;
 
 public class Application {

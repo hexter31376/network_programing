@@ -1,4 +1,4 @@
-package dev.wonyoung.adapter.in.swing.week2.day1.subject.view;
+package dev.wonyoung.adapter.in.view;
 
 import dev.wonyoung.infrastructure.container.di.Component;
 
