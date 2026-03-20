@@ -14,14 +14,17 @@ public class FileInspectViewImpl extends JFrame implements FileInspectView {
     private static final long KB = 1024L;
     private static final long MB = 1024L * KB;
 
-    private final JTextField pathField;
-    private final JTextArea  resultArea;
-    private final JButton    chooseButton;
-    private final JButton    inspectButton;
-    private final JLabel     statusLabel;
+    private JTextField pathField;
+    private JTextArea resultArea;
+    private JButton chooseButton;
+    private JButton inspectButton;
+    private JLabel statusLabel;
 
     public FileInspectViewImpl() {
-        super("File Inspector");
+    }
+
+    private void initUI() {
+        super.setTitle("File Inspector");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(620, 560);
         setLocationRelativeTo(null);
@@ -105,6 +108,7 @@ public class FileInspectViewImpl extends JFrame implements FileInspectView {
 
     @Override
     public void display() {
+        initUI();
         setVisible(true);
     }
 

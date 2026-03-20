@@ -33,7 +33,6 @@ public class AccountViewImpl extends JFrame implements AccountView {
     private JButton deleteButton;
 
     public AccountViewImpl() {
-        initUI();
     }
 
     private void initUI() {
@@ -310,6 +309,7 @@ public class AccountViewImpl extends JFrame implements AccountView {
 
     @Override
     public void display() {
+        initUI();
         setVisible(true);
     }
 }
