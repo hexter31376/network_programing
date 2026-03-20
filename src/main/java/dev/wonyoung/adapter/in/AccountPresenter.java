@@ -54,6 +54,8 @@ public class AccountPresenter {
             view.clearRegistrationForm();
         } catch (IllegalArgumentException ex) {
             view.showError(ex.getMessage());
+        } catch (RuntimeException ex) {
+            view.showError("시스템 오류: " + ex.getMessage());
         }
     }
 
@@ -70,7 +72,7 @@ public class AccountPresenter {
             view.showAccountResult(account.getName(), account.getBalance());
         } catch (IllegalArgumentException ex) {
             view.clearSearchResult();
-            view.showEmptyAccount();
+            view.showEmptyAccount(ex.getMessage());
         }
     }
 
@@ -97,7 +99,7 @@ public class AccountPresenter {
             view.setCount(accountUseCase.getCount());
             view.clearUpdateForm();
         } catch (IllegalArgumentException ex) {
-            view.showEmptyAccount();
+            view.showEmptyAccount(ex.getMessage());
         }
     }
 
@@ -114,7 +116,7 @@ public class AccountPresenter {
             view.setCount(accountUseCase.getCount());
             view.clearDeleteForm();
         } catch (IllegalArgumentException ex) {
-            view.showEmptyAccount();
+            view.showEmptyAccount(ex.getMessage());
         }
     }
 }

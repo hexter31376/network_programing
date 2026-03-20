@@ -18,7 +18,7 @@ public interface AccountView {
     void setCount(int count);
     void showAccountResult(String name, long balance);
     void showError(String message);
-    void showEmptyAccount();
+    void showEmptyAccount(String reason);
     void clearRegistrationForm();
     void clearSearchResult();
     void clearUpdateForm();
