@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 @Component
-public class ViewImpl extends JFrame implements AccountView {
+public class AccountViewImpl extends JFrame implements AccountView {
 
     // 등록 패널
     private JTextField regNameField;
@@ -22,7 +22,7 @@ public class ViewImpl extends JFrame implements AccountView {
     private JTextField resultNameField;
     private JTextField resultBalanceField;
 
-    public ViewImpl() {
+    public AccountViewImpl() {
     }
 
     private void initUI() {
