@@ -5,6 +5,7 @@ import dev.wonyoung.infrastructure.container.di.Component;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.im.InputContext;
 
 @Component
 public class AccountViewImpl extends JFrame implements AccountView {
@@ -146,6 +147,8 @@ public class AccountViewImpl extends JFrame implements AccountView {
 
     @Override
     public void showError(String message) {
+        InputContext ic = getInputContext();
+        if (ic != null) ic.endComposition();
         JOptionPane.showMessageDialog(this, message, "입력 오류", JOptionPane.ERROR_MESSAGE);
     }
 
