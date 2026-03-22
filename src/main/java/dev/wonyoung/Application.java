@@ -1,10 +1,12 @@
 package dev.wonyoung;
 
-import dev.wonyoung.infrastructure.container.Container;
+
+import dev.wonyoung.infrastructure.config.AppConfig;
 
 public class Application {
     public static void main(String[] args) throws Exception {
-        Container container = new Container();
-        container.scan("dev.wonyoung");
+        AppConfig appConfig = new AppConfig();
+        appConfig.startApp();
     }
 }
+

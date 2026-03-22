@@ -27,6 +27,9 @@ java {
 }
 
 dependencies {
+    // CGLIB
+    implementation 'cglib:cglib-nodep:3.3.0'
+
     // 테스트
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
