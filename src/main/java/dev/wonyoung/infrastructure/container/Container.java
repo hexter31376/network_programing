@@ -51,6 +51,10 @@ public class Container {
     private final Set<Class<?>> candidates = new HashSet<>();
     private final Set<Class<?>> inProgress = new HashSet<>();
 
+    public Container(String packageName) throws Exception {
+        scan(packageName);
+    }
+
     /**
      * AOP 인터셉터를 등록한다. 등록 순서대로 체인이 실행된다.
      *
@@ -84,7 +88,7 @@ public class Container {
      *
      * @param packageName 스캔할 루트 패키지명 (예: {@code "dev.wonyoung"})
      */
-    public void scan(String packageName) throws Exception {
+    private void scan(String packageName) throws Exception {
         candidates.addAll(scanner.scan(packageName));
     }
 

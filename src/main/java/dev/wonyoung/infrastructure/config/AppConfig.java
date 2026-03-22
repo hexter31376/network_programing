@@ -13,7 +13,6 @@ public class AppConfig {
     }
 
     private void init() throws Exception{
-        Container container = new Container();
-        container.scan("dev.wonyoung");
+        Container container = new Container("dev.wonyoung");
     }
 }
