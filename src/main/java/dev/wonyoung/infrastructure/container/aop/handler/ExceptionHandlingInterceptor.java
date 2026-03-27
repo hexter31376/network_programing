@@ -17,10 +17,10 @@ public class ExceptionHandlingInterceptor implements MethodInterceptor {
             if (e.getCause() != null) {
                 System.err.println("       원인: " + e.getCause().getMessage());
             }
-            return null;
+            throw e;
         } catch (RuntimeException e) {
             System.err.println("[ERROR] 예상치 못한 오류 (" + method.getName() + "): " + e.getMessage());
-            return null;
+            throw e;
         }
     }
 }
