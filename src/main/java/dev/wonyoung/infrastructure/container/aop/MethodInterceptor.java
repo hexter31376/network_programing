@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
  *           → invocation.proceed()  // next 호출
  *               → interceptors[1].intercept(...)
  *                   → invocation.proceed()
- *                       → methodProxy.invokeSuper()  // 실제 메서드 실행
+ *                       → superCall.call()  // 실제 메서드 실행
  * </pre>
  *
  * <h2>사용 예시</h2>
@@ -37,7 +37,7 @@ public interface MethodInterceptor {
      * <p>{@code invocation.proceed()}를 반드시 호출해야 다음 인터셉터 또는 실제 메서드가 실행된다.
      * 호출하지 않으면 체인이 중단된다(예외 발생 전 조기 반환 등의 용도로 활용 가능).</p>
      *
-     * @param target     실제 빈 인스턴스(CGLIB 프록시 자신)
+     * @param target     실제 빈 인스턴스(ByteBuddy 프록시 자신)
      * @param method     호출된 메서드의 리플렉션 정보
      * @param args       메서드에 전달된 인자 배열
      * @param invocation 다음 인터셉터 또는 실제 메서드로 진행하는 콜백

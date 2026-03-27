@@ -27,8 +27,8 @@ java {
 }
 
 dependencies {
-    // CGLIB
-    implementation 'cglib:cglib-nodep:3.3.0'
+    // ByteBuddy
+    implementation 'net.bytebuddy:byte-buddy:1.14.18'
 
     // 테스트
     testImplementation platform('org.junit:junit-bom:5.10.0')
