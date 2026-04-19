@@ -1,4 +1,4 @@
-package dev.wonyoung.application.week6;
+package dev.wonyoung.application;
 
 import dev.wonyoung.domain.model.ChatMessage;
 import dev.wonyoung.domain.port.in.ChatUseCase;

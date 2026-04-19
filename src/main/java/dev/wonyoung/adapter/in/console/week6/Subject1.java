@@ -2,8 +2,8 @@ package dev.wonyoung.adapter.in.console.week6;
 
 import dev.wonyoung.adapter.in.swing.week6.UdpChatPresenter;
 import dev.wonyoung.adapter.in.swing.week6.UdpChatView;
-import dev.wonyoung.adapter.out.udp.week6.UdpSocketAdapter;
-import dev.wonyoung.application.week6.UdpChatService;
+import dev.wonyoung.adapter.out.udp.UdpSocketAdapter;
+import dev.wonyoung.application.UdpChatService;
 import dev.wonyoung.domain.port.in.ChatUseCase;
 import dev.wonyoung.domain.port.out.UdpSocketPort;
 import dev.wonyoung.infrastructure.container.di.Component;

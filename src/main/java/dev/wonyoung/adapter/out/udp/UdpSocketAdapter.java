@@ -1,4 +1,4 @@
-package dev.wonyoung.adapter.out.udp.week6;
+package dev.wonyoung.adapter.out.udp;
 
 import dev.wonyoung.domain.model.ChatMessage;
 import dev.wonyoung.domain.port.out.UdpSocketPort;
