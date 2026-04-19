@@ -24,7 +24,7 @@ public class Subject2 {
 
             // 서버
             UdpSocketPort serverSocket = new UdpSocketAdapter(6000);
-            VocabularyService vocabularyService = new VocabularyService(new FileVocabularyRepository("vocabulary.txt"));
+            VocabularyService vocabularyService = new VocabularyService(new FileVocabularyRepository("vocabulary.csv"));
             VocabularyServerAdapter serverAdapter = new VocabularyServerAdapter(serverSocket, vocabularyService);
 
             // 클라이언트
