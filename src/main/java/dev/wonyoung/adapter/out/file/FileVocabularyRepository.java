@@ -4,61 +4,71 @@ import dev.wonyoung.domain.model.Word;
 import dev.wonyoung.domain.port.out.VocabularyRepository;
 
 import java.io.*;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.nio.file.*;
+import java.util.*;
 
 public class FileVocabularyRepository implements VocabularyRepository {
 
-    private final String filePath;
-    private final Properties store = new Properties();
+    private final Path filePath;
 
     public FileVocabularyRepository(String filePath) {
-        this.filePath = filePath;
-        load();
+        this.filePath = Path.of(filePath);
     }
 
     @Override
     public void save(Word word) {
-        store.setProperty(word.word(), word.meaning());
-        persist();
+        List<Word> words = readAll();
+        words.removeIf(w -> w.word().equals(word.word()));
+        words.add(word);
+        writeAll(words);
     }
 
     @Override
     public Optional<Word> findByWord(String word) {
-        String meaning = store.getProperty(word);
-        return meaning != null ? Optional.of(new Word(word, meaning)) : Optional.empty();
+        return readAll().stream()
+                .filter(w -> w.word().equals(word))
+                .findFirst();
     }
 
     @Override
     public boolean delete(String word) {
-        if (!store.containsKey(word)) return false;
-        store.remove(word);
-        persist();
+        List<Word> words = readAll();
+        boolean removed = words.removeIf(w -> w.word().equals(word));
+        if (!removed) return false;
+        writeAll(words);
         return true;
     }
 
     @Override
     public List<Word> findAll() {
-        return store.stringPropertyNames().stream()
-                .sorted()
-                .map(w -> new Word(w, store.getProperty(w)))
-                .toList();
+        return readAll();
     }
 
-    private void load() {
-        File file = new File(filePath);
-        if (!file.exists()) return;
-        try (InputStream in = new FileInputStream(file)) {
-            store.load(in);
+    private List<Word> readAll() {
+        if (!Files.exists(filePath)) return new ArrayList<>();
+        try (BufferedReader reader = Files.newBufferedReader(filePath)) {
+            List<Word> words = new ArrayList<>();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
+                String[] parts = line.split(",", 2);
+                if (parts.length < 2) continue;
+                words.add(new Word(parts[0], parts[1]));
+            }
+            return words;
         } catch (IOException e) {
-            throw new RuntimeException("단어장 파일 로드 실패: " + e.getMessage(), e);
+            throw new RuntimeException("단어장 파일 읽기 실패: " + e.getMessage(), e);
         }
     }
 
-    private void persist() {
-        try (OutputStream out = new FileOutputStream(filePath)) {
-            store.store(out, "Vocabulary");
+    private void writeAll(List<Word> words) {
+        try (BufferedWriter writer = Files.newBufferedWriter(filePath,
+                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
+            for (Word w : words) {
+                writer.write(w.word() + "," + w.meaning());
+                writer.newLine();
+            }
         } catch (IOException e) {
             throw new RuntimeException("단어장 파일 저장 실패: " + e.getMessage(), e);
         }
