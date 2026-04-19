@@ -7,4 +7,5 @@ import java.util.function.Consumer;
 public interface ChatUseCase {
     void sendMessage(String message);
     void startReceiving(Consumer<ChatMessage> onReceive);
+    void stop();
 }
