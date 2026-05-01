@@ -1,6 +1,6 @@
 package dev.wonyoung.infrastructure.container.aop.handler;
 
-import dev.wonyoung.application.exception.AppException;
+import dev.wonyoung.domin.exception.AppException;
 import dev.wonyoung.infrastructure.container.aop.MethodInterceptor;
 import dev.wonyoung.infrastructure.container.aop.MethodInvocation;
 
