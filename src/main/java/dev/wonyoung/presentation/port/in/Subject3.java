@@ -1,13 +1,20 @@
 package dev.wonyoung.presentation.port.in;
 
+import dev.wonyoung.infrastructure.adapter.subject3.CompressHttpServer;
 import dev.wonyoung.infrastructure.container.di.Component;
+import dev.wonyoung.infrastructure.container.di.Inject;
 
 @Component
 public class Subject3 {
 
+    private final CompressHttpServer compressHttpServer;
+
+    @Inject
+    public Subject3(CompressHttpServer compressHttpServer) {
+        this.compressHttpServer = compressHttpServer;
+    }
+
     public void start() {
-        System.out.println("Subject3: 시작");
-        // 비즈니스 로직 수행
-        System.out.println("Subject3: 종료");
+        compressHttpServer.start();
     }
 }
