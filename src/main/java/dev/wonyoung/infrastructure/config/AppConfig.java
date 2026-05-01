@@ -21,8 +21,12 @@ public class AppConfig {
         Container container = new Container("dev.wonyoung");
         container.addInterceptor(new ExceptionHandlingInterceptor());
 
-        container.get(Subject1.class).start();
-        container.get(Subject2.class).start();
-        container.get(Subject3.class).start();
+        Subject1 subject1 = container.get(Subject1.class);
+        Subject2 subject2 = container.get(Subject2.class);
+        Subject3 subject3 = container.get(Subject3.class);
+
+        new Thread(subject1::start, "subject1").start();
+        new Thread(subject2::start, "subject2").start();
+        new Thread(subject3::start, "subject3").start();
     }
 }
