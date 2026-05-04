@@ -1,4 +1,4 @@
-package dev.wonyoung.application.exception;
+package dev.wonyoung.domain.exception;
 
 public class AppException extends RuntimeException {
 
