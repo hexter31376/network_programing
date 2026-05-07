@@ -1,4 +1,4 @@
-package dev.wonyoung.domain.exception;
+package dev.wonyoung.chatting.domain.exception;
 
 public class AppException extends RuntimeException {
 
