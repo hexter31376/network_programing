@@ -29,6 +29,7 @@ public class ChatServer {
         acceptThread.start();
 
         appendToView("Server started. Listening on port " + PORT + "...");
+        appendToView("Server is empty. Waiting for clients to connect...");
     }
 
     private void acceptLoop() {
@@ -78,6 +79,9 @@ public class ChatServer {
         clients.remove(handler);
         appendToView("Client #" + handler.getClientId() + " disconnected: " + handler.getClientIp()
                 + " (Active: " + clients.size() + ")");
+        if (clients.isEmpty()) {
+            appendToView("Server is empty. Waiting for clients to connect...");
+        }
     }
 
     void appendToView(String message) {
