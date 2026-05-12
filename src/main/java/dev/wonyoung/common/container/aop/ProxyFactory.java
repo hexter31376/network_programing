@@ -1,4 +1,4 @@
-package dev.wonyoung.infrastructure.container.aop;
+package dev.wonyoung.common.container.aop;
 
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;

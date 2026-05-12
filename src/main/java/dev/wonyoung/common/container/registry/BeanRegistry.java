@@ -1,4 +1,4 @@
-package dev.wonyoung.infrastructure.container.registry;
+package dev.wonyoung.common.container.registry;
 
 import java.util.HashMap;
 import java.util.Map;

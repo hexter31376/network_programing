@@ -1,4 +1,4 @@
-package dev.wonyoung.infrastructure.container.aop;
+package dev.wonyoung.common.container.aop;
 
 /**
  * 인터셉터 체인에서 다음 단계로 진행하는 콜백 인터페이스.

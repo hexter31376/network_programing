@@ -1,6 +1,6 @@
-package dev.wonyoung.infrastructure.container.scanner;
+package dev.wonyoung.common.container.scanner;
 
-import dev.wonyoung.infrastructure.container.di.Component;
+import dev.wonyoung.common.container.di.Component;
 
 import java.io.File;
 import java.net.URL;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 지정한 패키지 하위를 재귀적으로 탐색하여 {@link dev.wonyoung.infrastructure.container.di.Component}
+ * 지정한 패키지 하위를 재귀적으로 탐색하여 {@link dev.wonyoung.common.container.di.Component}
  * 어노테이션이 붙은 클래스를 수집한다.
  *
  * <h2>동작 흐름</h2>

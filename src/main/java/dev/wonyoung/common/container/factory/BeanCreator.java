@@ -1,7 +1,7 @@
-package dev.wonyoung.infrastructure.container.factory;
+package dev.wonyoung.common.container.factory;
 
-import dev.wonyoung.infrastructure.container.aop.ProxyFactory;
-import dev.wonyoung.infrastructure.container.di.Inject;
+import dev.wonyoung.common.container.aop.ProxyFactory;
+import dev.wonyoung.common.container.di.Inject;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;

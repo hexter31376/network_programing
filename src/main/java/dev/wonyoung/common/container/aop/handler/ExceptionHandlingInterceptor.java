@@ -1,8 +1,8 @@
-package dev.wonyoung.infrastructure.container.aop.handler;
+package dev.wonyoung.common.container.aop.handler;
 
-import dev.wonyoung.domain.exception.AppException;
-import dev.wonyoung.infrastructure.container.aop.MethodInterceptor;
-import dev.wonyoung.infrastructure.container.aop.MethodInvocation;
+import dev.wonyoung.common.container.aop.handler.exception.AppException;
+import dev.wonyoung.common.container.aop.MethodInterceptor;
+import dev.wonyoung.common.container.aop.MethodInvocation;
 
 import java.lang.reflect.Method;
 

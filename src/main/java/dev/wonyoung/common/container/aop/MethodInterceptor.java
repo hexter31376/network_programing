@@ -1,4 +1,4 @@
-package dev.wonyoung.infrastructure.container.aop;
+package dev.wonyoung.common.container.aop;
 
 import java.lang.reflect.Method;
 

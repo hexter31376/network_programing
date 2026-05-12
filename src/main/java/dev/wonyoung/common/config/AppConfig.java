@@ -1,7 +1,7 @@
-package dev.wonyoung.infrastructure.config;
+package dev.wonyoung.common.config;
 
-import dev.wonyoung.infrastructure.container.Container;
-import dev.wonyoung.infrastructure.container.aop.handler.ExceptionHandlingInterceptor;
+import dev.wonyoung.common.container.Container;
+import dev.wonyoung.common.container.aop.handler.ExceptionHandlingInterceptor;
 
 public class AppConfig {
 

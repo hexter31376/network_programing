@@ -1,10 +1,10 @@
-package dev.wonyoung.infrastructure.container;
+package dev.wonyoung.common.container;
 
-import dev.wonyoung.infrastructure.container.aop.MethodInterceptor;
-import dev.wonyoung.infrastructure.container.aop.ProxyFactory;
-import dev.wonyoung.infrastructure.container.factory.BeanCreator;
-import dev.wonyoung.infrastructure.container.registry.BeanRegistry;
-import dev.wonyoung.infrastructure.container.scanner.ClassScanner;
+import dev.wonyoung.common.container.aop.MethodInterceptor;
+import dev.wonyoung.common.container.aop.ProxyFactory;
+import dev.wonyoung.common.container.factory.BeanCreator;
+import dev.wonyoung.common.container.registry.BeanRegistry;
+import dev.wonyoung.common.container.scanner.ClassScanner;
 
 import java.util.ArrayList;
 import java.util.HashSet;
