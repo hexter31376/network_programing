@@ -1,11 +1,11 @@
 package dev.wonyoung.infrastructure.config;
 
-import dev.wonyoung.chatting.adapter.in.swing.ChatServerController;
-import dev.wonyoung.chatting.adapter.in.swing.ChatServerView;
+import dev.wonyoung.chatting2.adapter.in.swing.ChatServer2Controller;
+import dev.wonyoung.chatting2.adapter.in.swing.ChatServer2View;
 import dev.wonyoung.infrastructure.container.Container;
 import dev.wonyoung.infrastructure.container.aop.handler.ExceptionHandlingInterceptor;
 
-public class AppConfig {
+public class AppConfig2 {
 
     public void startApp() {
         try {
@@ -17,13 +17,13 @@ public class AppConfig {
     }
 
     private void init() throws Exception {
-        Container container = new Container("dev.wonyoung.chatting");
+        Container container = new Container("dev.wonyoung.chatting2");
         container.addInterceptor(new ExceptionHandlingInterceptor());
 
-        ChatServerView view = new ChatServerView();
-        container.register(ChatServerView.class, view);
+        ChatServer2View view = new ChatServer2View();
+        container.register(ChatServer2View.class, view);
 
-        ChatServerController controller = container.get(ChatServerController.class);
+        ChatServer2Controller controller = container.get(ChatServer2Controller.class);
         controller.start();
     }
 }
