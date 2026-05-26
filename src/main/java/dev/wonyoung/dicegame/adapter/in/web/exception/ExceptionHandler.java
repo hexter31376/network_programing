@@ -2,8 +2,6 @@ package dev.wonyoung.dicegame.adapter.in.web.exception;
 
 import dev.wonyoung.common.container.aop.MethodInterceptor;
 import dev.wonyoung.common.container.aop.MethodInvocation;
-import dev.wonyoung.dicegame.domain.exception.AuthenticationException;
-import dev.wonyoung.dicegame.domain.exception.AuthorizationException;
 import dev.wonyoung.dicegame.domain.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
