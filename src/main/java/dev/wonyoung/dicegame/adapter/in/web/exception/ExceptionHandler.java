@@ -27,20 +27,6 @@ public class ExceptionHandler implements MethodInterceptor {
             }
             return null;
         });
-        handlers.put(AuthenticationException.class, e -> {
-            logger.warn("[AuthenticationException] {}", e.getMessage());
-            if (e.getCause() != null) {
-                logger.warn("원인: {}", e.getCause().getMessage());
-            }
-            return null;
-        });
-        handlers.put(AuthorizationException.class, e -> {
-            logger.warn("[AuthorizationException] {}", e.getMessage());
-            if (e.getCause() != null) {
-                logger.warn("원인: {}", e.getCause().getMessage());
-            }
-            return null;
-        });
         handlers.put(Exception.class, e -> {
             logger.error("[Exception] {}", e.getMessage(), e);
             return null;
