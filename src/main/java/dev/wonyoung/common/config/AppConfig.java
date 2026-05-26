@@ -1,7 +1,7 @@
 package dev.wonyoung.common.config;
 
 import dev.wonyoung.common.container.Container;
-import dev.wonyoung.common.container.aop.handler.ExceptionHandlingInterceptor;
+import dev.wonyoung.dicegame.adapter.in.web.exception.ExceptionHandler;
 
 public class AppConfig {
 
@@ -16,6 +16,6 @@ public class AppConfig {
 
     private void init() throws Exception {
         Container container = new Container("dev.wonyoung");
-        container.addInterceptor(new ExceptionHandlingInterceptor());
+        container.addInterceptor(new ExceptionHandler());
     }
 }
