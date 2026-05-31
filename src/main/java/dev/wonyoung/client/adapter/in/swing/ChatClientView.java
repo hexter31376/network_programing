@@ -15,6 +15,14 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+/**
+ * 채팅 클라이언트의 Swing GUI 뷰다.
+ *
+ * 상단에 호스트, 포트, 닉네임 입력 필드와 연결 및 연결 끊기 버튼을 배치하고,
+ * 중앙에 채팅 로그 영역, 하단에 메시지 입력 필드와 전송 버튼을 배치한다.
+ * setConnected 메서드로 연결 상태에 따라 버튼과 입력 필드의 활성화 여부를 일괄 전환한다.
+ * UI 업데이트는 invokeLater를 통해 EDT에서 안전하게 수행한다.
+ */
 public class ChatClientView extends JFrame {
 
     private final JTextField hostField;

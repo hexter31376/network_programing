@@ -11,6 +11,14 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.function.Consumer;
 
+/**
+ * 서버에 소켓으로 연결하고 메시지를 송수신하는 클라이언트 소켓 어댑터다.
+ *
+ * connect 호출 시 소켓을 열고 닉네임을 첫 줄로 전송한 뒤,
+ * 별도 데몬 스레드에서 readLine 루프를 돌며 서버 메시지를 수신한다.
+ * 수신한 메시지는 onMessage 콜백으로 뷰에 전달하고,
+ * 연결이 끊어지면 onDisconnect 콜백을 호출해 컨트롤러가 UI를 복구할 수 있도록 한다.
+ */
 public class SocketChatClient {
 
     private static final Logger logger = LoggerFactory.getLogger(SocketChatClient.class);

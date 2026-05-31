@@ -19,6 +19,15 @@ import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 import java.util.concurrent.ForkJoinPool;
 
+/**
+ * NIO2 비동기 소켓 서버다. CompletionHandler 콜백 방식을 사용한다.
+ *
+ * ForkJoinPool을 AsynchronousChannelGroup에 명시적으로 등록해
+ * accept와 read 완료 시 해당 풀의 스레드에서 콜백이 실행된다.
+ * serverChannel.accept는 OS에 연결 수락을 위임하고 즉시 반환하므로
+ * 어떤 스레드도 I/O 대기 중에 블로킹되지 않는다.
+ * CompletionHandler 안에서 다음 accept와 read를 재귀적으로 등록해 루프를 구성한다.
+ */
 public class AsyncServer implements ChatServer {
 
     private static final Logger logger = LoggerFactory.getLogger(AsyncServer.class);

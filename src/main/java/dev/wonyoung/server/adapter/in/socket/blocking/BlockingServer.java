@@ -13,6 +13,14 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * 스레드 per 클라이언트 방식의 블로킹 소켓 서버다.
+ *
+ * ServerSocket.accept()가 블로킹 상태로 연결을 기다리고,
+ * 연결이 들어오면 스레드 풀에서 ClientHandler를 꺼내 처리를 위임한다.
+ * 코드가 단순하고 직관적이지만 동시 접속자 수만큼 스레드가 필요해 대규모 환경에는 적합하지 않다.
+ * accept 루프는 별도의 단일 스레드 ExecutorService에서 실행해 메인 스레드를 블로킹하지 않는다.
+ */
 public class BlockingServer implements ChatServer {
 
     private static final Logger logger = LoggerFactory.getLogger(BlockingServer.class);

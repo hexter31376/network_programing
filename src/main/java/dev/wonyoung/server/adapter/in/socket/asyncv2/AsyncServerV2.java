@@ -18,6 +18,15 @@ import java.nio.channels.CompletionHandler;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ForkJoinPool;
 
+/**
+ * NIO2 비동기 소켓 서버다. CompletableFuture 체이닝 방식을 사용한다.
+ *
+ * AsyncServer와 동일하게 ForkJoinPool을 AsynchronousChannelGroup에 등록한다.
+ * CompletionHandler를 CompletableFuture로 래핑해 콜백 중첩을 없애고
+ * thenAcceptAsync로 체이닝하므로 콜백 완료 통지 스레드가 즉시 반환된다.
+ * readLoop는 Runnable 배열 트릭을 사용해 람다 안에서 자기 자신을 재귀 호출한다.
+ * 세션별 로그인 및 메시지 처리 로직은 AsyncSessionV2에 위임한다.
+ */
 public class AsyncServerV2 implements ChatServer {
 
     private static final Logger logger = LoggerFactory.getLogger(AsyncServerV2.class);

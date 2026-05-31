@@ -9,6 +9,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * NIO2 AsynchronousSocketChannel을 ClientSession 인터페이스로 감싼 세션 구현체다.
+ *
+ * channel.write가 Future를 반환하므로 get으로 완료를 기다려 모든 바이트를 전송한다.
+ * 동시에 여러 스레드가 send를 호출할 수 있으므로 synchronized로 보호한다.
+ */
 public class AsyncSession implements ClientSession {
 
     private final String id;

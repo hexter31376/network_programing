@@ -6,6 +6,13 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+/**
+ * 서버 Swing UI의 이벤트를 처리하는 컨트롤러다.
+ *
+ * ChatServerView에서 발생하는 시작 및 중지 버튼 클릭을 감지하고
+ * ChatServer 인터페이스의 start와 stop을 호출한다.
+ * 서버 시작 실패 시 예외 메시지를 뷰의 상태 레이블에 표시한다.
+ */
 public class ChatServerController {
 
     private static final Logger logger = LoggerFactory.getLogger(ChatServerController.class);

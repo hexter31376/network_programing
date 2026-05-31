@@ -9,6 +9,15 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * NIO 논블로킹 서버에서 클라이언트 연결 하나의 상태를 관리하는 세션 클래스다.
+ *
+ * TCP는 스트림 기반이므로 한 번의 read에 여러 줄이 올 수 있다.
+ * ByteArrayOutputStream을 줄 버퍼로 사용해 바이트를 누적하다가
+ * 줄바꿈 문자를 만나면 완성된 줄을 processLine으로 처리한다.
+ * 로그인 전에는 첫 줄을 닉네임으로 처리하고,
+ * 로그인 후에는 일반 채팅과 귓속말 명령을 분기한다.
+ */
 public class ChannelSession {
 
     private static final String WHISPER_PREFIX = "/w ";

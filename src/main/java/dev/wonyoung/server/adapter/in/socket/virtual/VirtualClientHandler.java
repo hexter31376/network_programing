@@ -15,6 +15,13 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.UUID;
 
+/**
+ * Virtual Thread 서버에서 클라이언트 연결 하나를 담당하는 핸들러다.
+ *
+ * ClientHandler와 로직이 동일하며 Virtual Thread 위에서 실행된다는 점만 다르다.
+ * readLine 블로킹이 발생해도 JVM이 Carrier Thread를 반환하므로
+ * OS 스레드를 점유하지 않는다.
+ */
 public class VirtualClientHandler implements ClientSession, Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(VirtualClientHandler.class);

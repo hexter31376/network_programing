@@ -21,6 +21,14 @@ import java.util.concurrent.Executors;
  *   2. 클라이언트 핸들러를 newVirtualThreadPerTaskExecutor()로 실행
  *      → 플랫폼 스레드 풀 크기 제한 없이 클라이언트마다 경량 스레드 할당
  */
+/**
+ * Java 21 Virtual Thread 기반의 채팅 서버다.
+ *
+ * 코드 구조는 BlockingServer와 동일하지만 클라이언트 핸들러를
+ * newVirtualThreadPerTaskExecutor로 실행해 접속자마다 경량 Virtual Thread를 할당한다.
+ * Virtual Thread는 readLine 블로킹 시 Carrier Thread를 반환하므로
+ * 플랫폼 스레드를 낭비하지 않고 수십만 동시 연결을 처리할 수 있다.
+ */
 public class VirtualServer implements ChatServer {
 
     private static final Logger logger = LoggerFactory.getLogger(VirtualServer.class);

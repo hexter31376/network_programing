@@ -9,6 +9,14 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
+/**
+ * 채팅 클라이언트 Swing UI의 이벤트를 처리하는 컨트롤러다.
+ *
+ * 연결 버튼 클릭 시 블로킹 소켓 연결을 EDT가 아닌 별도 데몬 스레드에서 수행해
+ * UI가 멈추지 않도록 한다.
+ * 전송 버튼 클릭 또는 엔터 키 입력 시 SocketChatClient를 통해 메시지를 서버에 전송한다.
+ * 서버 연결 해제 시 뷰를 비연결 상태로 복구하고 알림 메시지를 표시한다.
+ */
 public class ChatClientController {
 
     private final ChatClientView view;

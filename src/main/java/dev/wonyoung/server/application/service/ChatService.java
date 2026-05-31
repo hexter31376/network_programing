@@ -11,6 +11,14 @@ import dev.wonyoung.common.container.di.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 채팅 서버의 핵심 도메인 서비스다.
+ *
+ * LoginUseCase, LogoutUseCase, ChatUseCase 세 가지 유스케이스를 한 클래스에서 구현한다.
+ * 로그인 시 닉네임 중복 검사를 거쳐 세션을 등록하고 전체에 입장 알림을 보낸다.
+ * 로그아웃 시 세션을 해제하고 퇴장 알림을 전체에 보낸다.
+ * 채팅 메시지는 ChatMessage 도메인 객체로 포맷을 통일한 뒤 ChatSendPort를 통해 전송한다.
+ */
 @Component
 public class ChatService implements LoginUseCase, LogoutUseCase, ChatUseCase {
 

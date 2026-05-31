@@ -18,6 +18,15 @@ import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * NIO Selector 기반의 논블로킹 소켓 서버다.
+ *
+ * 단일 스레드에서 Selector로 여러 채널의 이벤트를 감시한다.
+ * OP_ACCEPT 이벤트가 발생하면 새 클라이언트를 등록하고,
+ * OP_READ 이벤트가 발생하면 해당 채널의 ChannelSession에 데이터를 전달한다.
+ * 스레드를 블로킹하지 않아 메모리 효율이 높지만,
+ * Selector 스레드에서 블로킹 작업을 수행하면 전체 채널 처리가 지연된다.
+ */
 public class NonBlockingServer implements ChatServer {
 
     private static final Logger logger = LoggerFactory.getLogger(NonBlockingServer.class);

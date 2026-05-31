@@ -11,6 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 접속 중인 클라이언트 세션을 관리하고 메시지를 전송하는 출력 어댑터다.
+ *
+ * ConcurrentHashMap으로 닉네임과 세션을 관리해 스레드 안전성을 보장한다.
+ * 닉네임 중복 등록은 putIfAbsent로 원자적으로 거부한다.
+ * broadcast는 현재 접속 중인 모든 세션에게 메시지를 전송하고,
+ * whisper는 발신자와 수신자 양쪽 모두에게 동일한 메시지를 전송한다.
+ * closeAll은 서버 종료 시 세션 맵을 먼저 비운 뒤 연결을 종료해
+ * 종료 과정에서 발생하는 재귀적 broadcast를 방지한다.
+ */
 @Component
 public class ClientSessionStore implements ChatSendPort {
 

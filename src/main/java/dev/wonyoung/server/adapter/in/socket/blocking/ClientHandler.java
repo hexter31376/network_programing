@@ -15,6 +15,15 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.UUID;
 
+/**
+ * 블로킹 서버에서 클라이언트 연결 하나를 담당하는 핸들러다.
+ *
+ * Runnable을 구현해 스레드 풀 위에서 실행되며,
+ * BufferedReader.readLine으로 클라이언트 메시지를 한 줄씩 읽는다.
+ * 첫 번째 줄은 닉네임으로 처리해 로그인을 시도하고,
+ * 이후 줄은 일반 채팅 또는 /w 접두사로 시작하는 귓속말 명령으로 분기한다.
+ * ClientSession도 구현해 ClientSessionStore에 직접 등록된다.
+ */
 public class ClientHandler implements ClientSession, Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientHandler.class);

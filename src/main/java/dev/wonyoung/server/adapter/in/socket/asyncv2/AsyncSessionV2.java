@@ -13,6 +13,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * AsyncServerV2에서 클라이언트 연결 하나의 상태와 메시지 처리를 담당하는 세션 클래스다.
+ *
+ * processBuffer로 ByteBuffer를 받아 줄 단위로 파싱하고,
+ * 로그인 전에는 첫 줄을 닉네임으로 처리하며 로그인 후에는 채팅과 귓속말을 분기한다.
+ * send는 channel.write().get으로 전송 완료를 보장하고 synchronized로 동시 접근을 막는다.
+ */
 public class AsyncSessionV2 implements ClientSession {
 
     private static final String WHISPER_PREFIX = "/w ";
