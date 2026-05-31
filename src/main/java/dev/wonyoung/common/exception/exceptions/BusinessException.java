@@ -1,4 +1,4 @@
-package dev.wonyoung.dicegame.domain.exception;
+package dev.wonyoung.common.exception.exceptions;
 
 public class BusinessException extends RuntimeException {
 
