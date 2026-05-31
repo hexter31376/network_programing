@@ -1,7 +1,7 @@
 package dev.wonyoung.common.config;
 
 import dev.wonyoung.common.container.Container;
-import dev.wonyoung.dicegame.adapter.in.web.exception.ExceptionHandler;
+import dev.wonyoung.common.exception.ExceptionHandler;
 
 public class AppConfig {
 
