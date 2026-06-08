@@ -10,11 +10,11 @@ package dev.wonyoung.common.container.aop;
  * <pre>
  * 인터셉터가 [logging, transaction] 순으로 등록된 경우:
  *
- * chain(index=0)  →  logging.intercept(..., next0)
+ * chain(index=0)  ->  logging.intercept(..., next0)
  *                        next0.proceed()
- *                            chain(index=1)  →  transaction.intercept(..., next1)
+ *                            chain(index=1)  ->  transaction.intercept(..., next1)
  *                                                   next1.proceed()
- *                                                       chain(index=2)  →  superCall.call() (실제 메서드)
+ *                                                       chain(index=2)  ->  superCall.call() (실제 메서드)
  * </pre>
  *
  * <p>{@code @FunctionalInterface}는 아니지만 {@link ByteBuddyInterceptorDelegate} 내부에서

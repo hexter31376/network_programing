@@ -15,7 +15,7 @@ import java.util.Set;
  *
  * <h2>동작 흐름</h2>
  * <ol>
- *   <li>패키지명을 파일 경로로 변환 (예: {@code dev.wonyoung} → {@code dev/wonyoung})</li>
+ *   <li>패키지명을 파일 경로로 변환 (예: {@code dev.wonyoung} -> {@code dev/wonyoung})</li>
  *   <li>클래스로더로 해당 경로의 {@link java.io.File} 디렉터리를 얻는다</li>
  *   <li>디렉터리를 재귀 탐색하며 {@code .class} 파일을 모두 수집한다</li>
  *   <li>{@code Class.forName()}으로 클래스를 로드한 뒤 {@code @Component} 여부를 확인한다</li>

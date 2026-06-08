@@ -11,12 +11,12 @@ import java.lang.reflect.Method;
  * <h2>실행 흐름</h2>
  * <pre>
  * 메서드 호출
- *   → ProxyFactory.chain()
- *       → interceptors[0].intercept(target, method, args, next)
- *           → invocation.proceed()  // next 호출
- *               → interceptors[1].intercept(...)
- *                   → invocation.proceed()
- *                       → superCall.call()  // 실제 메서드 실행
+ *   -> ProxyFactory.chain()
+ *       -> interceptors[0].intercept(target, method, args, next)
+ *           -> invocation.proceed()  // next 호출
+ *               -> interceptors[1].intercept(...)
+ *                   -> invocation.proceed()
+ *                       -> superCall.call()  // 실제 메서드 실행
  * </pre>
  *
  * <h2>사용 예시</h2>

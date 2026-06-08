@@ -24,7 +24,7 @@ import java.util.Set;
  *      ClassScanner가 패키지를 탐색하여 @Component 클래스를 candidates에 추가
  *
  * 2. get(UserService.class)
- *      BeanRegistry에서 호환 타입 조회 → 없으면 아래로 진행
+ *      BeanRegistry에서 호환 타입 조회 -> 없으면 아래로 진행
  *      candidates에서 UserService에 호환되는 클래스 탐색
  *      순환 의존성 감지 (inProgress 집합으로 추적)
  *      BeanCreator.create(candidate)

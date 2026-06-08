@@ -4,13 +4,23 @@ plugins {
 }
 
 application {
-    mainClass.set('dev.wonyoung.Application')
+    // 서버 진입점. `./gradlew run` 또는 `./run.sh`로 서버를 실행한다.
+    mainClass.set('dev.wonyoung.DiceGameApplication')
 }
 
 run {
     standardInput = System.in
     standardOutput = System.out
     errorOutput = System.err
+}
+
+// 클라이언트 개별 실행용 태스크: `./gradlew runClient`
+tasks.register('runClient', JavaExec) {
+    group = 'application'
+    description = '주사위 게임 Swing 클라이언트를 실행한다.'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass.set('dev.wonyoung.DiceGameClientApplication')
+    standardInput = System.in
 }
 
 group = 'dev.wonyoung'
@@ -29,6 +39,9 @@ java {
 dependencies {
     // ByteBuddy
     implementation 'net.bytebuddy:byte-buddy:1.14.18'
+
+    // JSON (클라이언트-서버 메시지 직렬화)
+    implementation 'com.google.code.gson:gson:2.11.0'
 
     // Logging
     implementation 'org.slf4j:slf4j-api:2.0.13'
